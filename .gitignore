@@ -3,3 +3,4 @@ backend/.idea/
 backend/bin/
 backend/obj/
 .idea/.idea.E-ShopBuilder/.idea/workspace.xml
+node_modules/
