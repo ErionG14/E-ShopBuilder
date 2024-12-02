@@ -17,3 +17,17 @@ management, secure checkout, and a responsive design, E-ShopBuilder streamlines 
 experience.
 
 # Features
+* User-friendly interface for store owners and customers.
+* Product catalog with images, descriptions, and categories.
+* Cart and checkout functionality with payment gateway integration.
+* Responsive design for seamless use on all devices.
+* User authentication and profile management.
+* Search functionality to easily find products.
+* Order tracking and management system.
+
+  
+# Technologies Used
+* Frontend: React.js, Tailwind CSS
+* Backend: .NET Core API
+* Database: MySQL
+* Payment Gateway: Stripe
