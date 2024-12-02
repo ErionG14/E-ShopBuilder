@@ -1,6 +1,6 @@
 import React from "react";
 import "./Navbar.css"; 
-
+import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <nav className="flex items-center justify-between p-4 bg-white shadow-md">
