@@ -27,7 +27,7 @@ experience.
 
   
 # Technologies Used
-* Frontend: React.js, Tailwind CSS
-* Backend: .NET Core API
-* Database: MySQL
-* Payment Gateway: Stripe
+* **Frontend:** React.js, Tailwind CSS
+* **Backend:** .NET Core API
+* **Database:** MySQL
+* **Payment Gateway:** Stripe
