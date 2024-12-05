@@ -30,4 +30,3 @@ experience.
 * **Frontend:** React.js, Tailwind CSS
 * **Backend:** .NET Core API
 * **Database:** MySQL
-* **Payment Gateway:** Stripe
