@@ -1,5 +1,6 @@
 import React from "react";
 import advertisementImage from "../../assets/photos/Hosting.jpg";
+import setupjpg from "../../assets/photos/setup-icon.png";
 import secondCard from "../../assets/photos/card2.png"
 import thirdCard from "../../assets/photos/card3.png"
 import design from "../../assets/photos/design.jpg"
@@ -11,9 +12,7 @@ const Home = () => {
     <>
       <div className="md:w-full bg-yellow-200">
         <div className="md:flex">
-          {/* Main flex container */}
           <div className="md:flex-shrink-0 w-1/2">
-            {/* Image container */}
             <img
               className="w-full object-cover"
               src={advertisementImage}
@@ -21,7 +20,6 @@ const Home = () => {
             />
           </div>
           <div className="p-8 md:w-1/2 flex flex-col justify-center">
-            {/* Text container */}
             <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
               Special E-ShopBuilder Hosting
             </div>
@@ -45,7 +43,7 @@ const Home = () => {
           <div className="bg-white rounded-lg overflow-hidden place-items-center">
             <img
               className="w-45 h-45 object-cover"
-              src={secondCard}
+              src={setupjpg}
               alt="Feature 1"
             />
             <div className="p-6">
@@ -100,7 +98,6 @@ const Home = () => {
 
       <div className="md:w-full p-16">
         <div className="md:flex">
-          {/* Text container */}
           <div className="p-8 md:w-1/2 flex flex-col justify-center">
             <h1 className="block mt-1 text-lg leading-tight font-medium text-black py-4">
               Design youre E-commerce With 1-Click
@@ -111,7 +108,6 @@ const Home = () => {
               any website style of choice. The only limit is your imagination.
             </p>
           </div>
-          {/* Image container */}
           <div className="md:flex-shrink-0 w-1/2">
             <img
               className="w-full object-cover rounded"
@@ -124,7 +120,6 @@ const Home = () => {
 
       <div className="md:w-full p-16">
         <div className="md:flex">
-          {/* Image container */}
           <div className="md:flex-shrink-0 w-1/2">
             <img
               className="w-full object-cover rounded"
@@ -132,7 +127,6 @@ const Home = () => {
               alt="Beautiful design"
             />
           </div>
-          {/* Text container */}
           <div className="p-8 md:w-1/2 flex flex-col justify-center">
             <h1 className="block mt-1 text-lg leading-tight font-medium text-black py-4">
               Start Customizing Your Website
@@ -151,14 +145,13 @@ const Home = () => {
           Sign Up For Hosting Now <FaArrowRight />
         </button>
       </div>
-      <p className="text-center text-gray-400">
+      <p className="text-center text-gray-400 mb-4">
         * Hosting offer valid for existing E-ShopBuilder customers only;
         E-ShopBuilder purchase required. Terms and Conditions apply.
       </p>
 
       <div className="md:w-full p-16 bg-blue-50">
         <div className="md:flex">
-          {/* Text container */}
           <div className="p-8 md:w-1/2 flex flex-col justify-center">
             <h1 className="block mt-1 text-lg leading-tight font-medium text-black py-4">
               Design youre E-commerce With 1-Click
@@ -172,7 +165,6 @@ const Home = () => {
               Take the step <FaArrowRight />
             </button>
           </div>
-          {/* Image container */}
           <div className="md:flex-shrink-0 w-1/2">
             <img
               className="w-full object-cover rounded"

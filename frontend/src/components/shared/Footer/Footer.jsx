@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
     return (
         <footer>
-    <div class="bg-gray-800 py-4 text-gray-400">
+    <div class="bg-black py-4 text-gray-400">
       <div class="container px-4 mx-auto">
         <div class="-mx-4 flex flex-wrap justify-between">
           <div class="px-4 my-4 w-full xl:w-1/5">
@@ -31,30 +31,30 @@ const Footer = () => {
 
           <div class="px-4 my-4 w-full sm:w-auto">
             <div>
-              <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">Company</h2>
+              <h2 class="inline-block text-2xl pb-4 mb-4 border-b-2 border-blue-600">Company</h2>
             </div>
             <ul class="leading-8">
-              <li><a href="#" class="hover:text-blue-400">About Us</a></li>
-              <li><a href="#" class="hover:text-blue-400">Terms &amp; Conditions</a></li>
-              <li><a href="#" class="hover:text-blue-400">Privacy Policy</a></li>
-              <li><a href="#" class="hover:text-blue-400">Contact Us</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">About Us</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">Terms &amp; Conditions</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">Privacy Policy</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">Contact Us</a></li>
             </ul>
           </div>
           <div class="px-4 my-4 w-full sm:w-auto">
             <div>
-              <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">Blog</h2>
+              <h2 class="inline-block text-2xl pb-4 mb-4 border-b-2 border-blue-600">Blog</h2>
             </div>
             <ul class="leading-8">
-              <li><a href="#" class="hover:text-blue-400">Getting Started With HTML and CSS</a></li>
-              <li><a href="#" class="hover:text-blue-400">What Is Flex And When to Use It?</a></li>
-              <li><a href="#" class="hover:text-blue-400">How TailwindCSS Can Help Your Productivity?</a></li>
-              <li><a href="#" class="hover:text-blue-400">5 Tips to Make Responsive Website</a></li>
-              <li><a href="#" class="hover:text-blue-400">See More</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">Getting Started With HTML and CSS</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">What Is Flex And When to Use It?</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">How TailwindCSS Can Help Your Productivity?</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">5 Tips to Make Responsive Website</a></li>
+              <li><a href="#" class="hover:text-white transition-colors duration-300">See More</a></li>
             </ul>
           </div>
           <div class="px-4 my-4 w-full sm:w-auto xl:w-1/5">
             <div>
-              <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">Connect With Us</h2>
+              <h2 class="inline-block text-2xl pb-4 mb-4 border-b-2 border-blue-600">Connect With Us</h2>
             </div>
             <a href="#" class="inline-flex items-center justify-center h-8 w-8 border border-gray-100 rounded-full mr-1 hover:text-blue-400 hover:border-blue-400">
               <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
@@ -81,20 +81,6 @@ const Footer = () => {
                 <path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path>
               </svg>
             </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="bg-indigo-700 py-4 text-gray-100">
-      <div class="container mx-auto px-4">
-        <div class="-mx-4 flex flex-wrap justify-between">
-          <div class="px-4 w-full text-center sm:w-auto sm:text-left">
-            Copyright © 2020
-            <script>new Date().getFullYear()  2020 && document.write("- " + new Date().getFullYear())</script>- 2022
-            Tailwindow. All Rights Reserved.
-          </div>
-          <div class="px-4 w-full text-center sm:w-auto sm:text-left">
-            Made with ❤️ by Tailwindow.
           </div>
         </div>
       </div>
