@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using EShopBuilder.Identity.API.Models;
 using Microsoft.AspNetCore.Identity;
@@ -37,9 +38,9 @@ public class TokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddHours(
-                Convert.ToInt32(_configuration["JwtTokenSettings:TokenExpirationHours"] ??
-                                "1")), // Configure expiration from appsettings
+            Expires = DateTime.UtcNow.AddMinutes(
+                Convert.ToInt32(_configuration["JwtTokenSettings:TokenExpirationMinutes"] ??
+                                "15")), // Configure expiration from appsettings
             Issuer = _configuration["JwtTokenSettings:ValidIssuer"],
             Audience = _configuration["JwtTokenSettings:ValidAudience"],
             SigningCredentials = credentials
@@ -48,5 +49,13 @@ public class TokenService
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+    
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[64];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }
