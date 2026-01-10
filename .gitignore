@@ -1,6 +1,8 @@
 .idea/
 backend/.idea/
-backend/bin/
-backend/obj/
+**/bin/
+**/obj/
+EShopBuilder.Identity.API/bin/
+EShopBuilder.Identity.API/obj/
 .idea/.idea.E-ShopBuilder/.idea/workspace.xml
 node_modules/
