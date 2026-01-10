@@ -27,4 +27,8 @@ public class User : IdentityUser
     public string? Image { get; set; }
     
     public Roles Role { get; set; }
+    
+    public string? RefreshToken { get; set; }
+    
+    public DateTime RefreshTokenExpiryTime { get; set; }
 }
