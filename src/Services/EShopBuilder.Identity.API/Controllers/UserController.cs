@@ -25,7 +25,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterDTO model)
+    public async Task<IActionResult> Register([FromBody]RegisterDTO model)
     {
         if (!ModelState.IsValid)
         {
@@ -76,7 +76,7 @@ public class UserController : ControllerBase
 
     [HttpPost("AddUser")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-    public async Task<IActionResult> AddUser(AddUserByAdminDto model)
+    public async Task<IActionResult> AddUser([FromBody]AddUserByAdminDto model)
     {
         if (!ModelState.IsValid)
         {
@@ -165,7 +165,7 @@ public class UserController : ControllerBase
     // Update user (Admin only)
     [HttpPut("UpdateUser{id}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-    public async Task<IActionResult> UpdateUser(string id, UserUpdateDto model)
+    public async Task<IActionResult> UpdateUser(string id, [FromBody]UserUpdateDto model)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
