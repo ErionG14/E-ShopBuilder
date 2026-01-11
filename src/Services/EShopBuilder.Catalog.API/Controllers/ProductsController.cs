@@ -38,11 +38,13 @@ namespace EShopBuilder.Catalog.API.Controllers;
 
     // POST: api/products (Private)
     [HttpPost("addProduct")]
-    //[Authorize]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateProduct( ProductCreateDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+        if (string.IsNullOrEmpty(userId)) return Unauthorized(new { message = "User identification failed." });
 
         var product = new Product
         {
@@ -58,21 +60,31 @@ namespace EShopBuilder.Catalog.API.Controllers;
 
         _context.Products.Add(product);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+        
+        return CreatedAtAction(
+            nameof(GetProductById), 
+            new { id = product.Id }, 
+            new { 
+                message = "Product added successfully!", 
+                data = product 
+            });
     }
 
     // PUT: api/products/{id} (Private - Owner only)
     [HttpPut("updateProduct/{id}")]
-    //[Authorize]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
     public async Task<IActionResult> UpdateProduct(int id,  ProductCreateDto dto)
     {
         var product = await _context.Products.FindAsync(id);
-        if (product == null) return NotFound();
-
-        // Security check: Is this the owner?
+        if (product == null) 
+            return NotFound(new { message = $"Update failed: Product {id} not found." });
+        
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (product.UserId != userId) return Forbid();
-
+        if (product.UserId != userId) 
+            return Forbid();
+        
         product.Name = dto.Name;
         product.Description = dto.Description;
         product.Price = dto.Price;
@@ -81,23 +93,36 @@ namespace EShopBuilder.Catalog.API.Controllers;
         product.ImageUrl = dto.ImageUrl;
 
         await _context.SaveChangesAsync();
-        return NoContent();
+        
+        return Ok(new 
+        { 
+            message = "Product updated successfully.", 
+            productId = id,
+            updatedAt = DateTime.UtcNow 
+        });
     }
 
     // DELETE: api/products/{id} (Private - Owner only)
-    [HttpDelete("{id}")]
-    //[Authorize]
+    [HttpDelete("deleteProduct/{id}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var product = await _context.Products.FindAsync(id);
-        if (product == null) return NotFound();
-
-        // Security check: Is this the owner?
+        if (product == null) return NotFound(new { message = $"Product with ID {id} not found." });
+        
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (product.UserId != userId) return Forbid();
 
         _context.Products.Remove(product);
         await _context.SaveChangesAsync();
-        return NoContent();
+        
+        return Ok(new { 
+            message = "Product deleted successfully.", 
+            productId = id,
+            deletedAt = DateTime.UtcNow 
+        });
     }
 }
