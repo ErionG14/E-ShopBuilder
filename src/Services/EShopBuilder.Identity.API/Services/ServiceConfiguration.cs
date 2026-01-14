@@ -25,7 +25,7 @@ public static class ServiceConfiguration
 
         builder.Services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc("v1", new OpenApiInfo { Title = "E-ShopBuilder", Version = "v1" });
+            option.SwaggerDoc("v1", new OpenApiInfo { Title = "E-ShopBuilder Identity API", Version = "v1" });
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,

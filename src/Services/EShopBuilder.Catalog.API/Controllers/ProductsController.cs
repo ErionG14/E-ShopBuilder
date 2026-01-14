@@ -2,6 +2,7 @@
 using EShopBuilder.Catalog.API.Data;
 using EShopBuilder.Catalog.API.DTO;
 using EShopBuilder.Catalog.API.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,7 @@ namespace EShopBuilder.Catalog.API.Controllers;
 
     // POST: api/products (Private)
     [HttpPost("addProduct")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Owner")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateProduct( ProductCreateDto dto)
@@ -54,6 +55,7 @@ namespace EShopBuilder.Catalog.API.Controllers;
             StockQuantity = dto.StockQuantity,
             Category = dto.Category,
             ImageUrl = dto.ImageUrl,
+            StoreId =  dto.StoreId,
             UserId = userId,
             CreatedAt = DateTime.UtcNow
         };
@@ -72,7 +74,7 @@ namespace EShopBuilder.Catalog.API.Controllers;
 
     // PUT: api/products/{id} (Private - Owner only)
     [HttpPut("updateProduct/{id}")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Owner")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
     public async Task<IActionResult> UpdateProduct(int id,  ProductCreateDto dto)
@@ -104,7 +106,7 @@ namespace EShopBuilder.Catalog.API.Controllers;
 
     // DELETE: api/products/{id} (Private - Owner only)
     [HttpDelete("deleteProduct/{id}")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Owner")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -8,4 +8,5 @@ public class ProductCreateDto
     public int StockQuantity { get; set; }
     public string Category { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
+    public int StoreId { get; set; }
 }
