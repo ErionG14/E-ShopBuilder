@@ -36,6 +36,16 @@ namespace EShopBuilder.Catalog.API.Controllers;
         if (product == null) return NotFound();
         return Ok(product);
     }
+    
+    [HttpGet("Store/{storeId}")]
+    public async Task<IActionResult> GetProductsByStore(int storeId)
+    {
+        var products = await _context.Products
+            .Where(p => p.StoreId == storeId)
+            .ToListAsync();
+
+        return Ok(products);
+    }
 
     // POST: api/products (Private)
     [HttpPost("addProduct")]
@@ -125,6 +135,65 @@ namespace EShopBuilder.Catalog.API.Controllers;
             message = "Product deleted successfully.", 
             productId = id,
             deletedAt = DateTime.UtcNow 
+        });
+    }
+    
+    [HttpGet("Search")]
+    [AllowAnonymous]
+    public async Task<IActionResult> SearchProducts(
+        [FromQuery] string? name, 
+        [FromQuery] string? category, 
+        [FromQuery] decimal? minPrice, 
+        [FromQuery] decimal? maxPrice,
+        [FromQuery] int page = 1,      // Default to first page
+        [FromQuery] int pageSize = 10  // Default 10 items per page
+    )
+    {
+        // Start the query
+        var query = _context.Products.AsQueryable();
+    
+        // --- 1. Applying Filters ---
+        if (!string.IsNullOrEmpty(name))
+        {
+            query = query.Where(p => p.Name.Contains(name));
+        }
+    
+        if (!string.IsNullOrEmpty(category))
+        {
+            query = query.Where(p => p.Category == category);
+        }
+    
+        if (minPrice.HasValue)
+        {
+            query = query.Where(p => p.Price >= minPrice.Value);
+        }
+
+        if (maxPrice.HasValue)
+        {
+            query = query.Where(p => p.Price <= maxPrice.Value);
+        }
+
+        // --- 2. Calculating Totals ---
+        // We count the total filtered items BEFORE we skip/take for the frontend to know the page count
+        var totalItems = await query.CountAsync();
+
+        // --- 3. Applying Pagination & Sorting ---
+        int skip = (page - 1) * pageSize;
+
+        var results = await query
+            .OrderByDescending(p => p.CreatedAt) 
+            .Skip(skip)
+            .Take(pageSize)
+            .ToListAsync();
+
+        // --- 4. Returning Paginated Response ---
+        return Ok(new 
+        {
+            TotalItems = totalItems,
+            TotalPages = (int)Math.Ceiling((double)totalItems / pageSize),
+            CurrentPage = page,
+            PageSize = pageSize,
+            Data = results
         });
     }
 }
