@@ -145,14 +145,12 @@ namespace EShopBuilder.Catalog.API.Controllers;
         [FromQuery] string? category, 
         [FromQuery] decimal? minPrice, 
         [FromQuery] decimal? maxPrice,
-        [FromQuery] int page = 1,      // Default to first page
-        [FromQuery] int pageSize = 10  // Default 10 items per page
+        [FromQuery] int page = 1,     
+        [FromQuery] int pageSize = 10 
     )
     {
-        // Start the query
         var query = _context.Products.AsQueryable();
-    
-        // --- 1. Applying Filters ---
+        
         if (!string.IsNullOrEmpty(name))
         {
             query = query.Where(p => p.Name.Contains(name));
@@ -172,12 +170,9 @@ namespace EShopBuilder.Catalog.API.Controllers;
         {
             query = query.Where(p => p.Price <= maxPrice.Value);
         }
-
-        // --- 2. Calculating Totals ---
-        // We count the total filtered items BEFORE we skip/take for the frontend to know the page count
+        
         var totalItems = await query.CountAsync();
-
-        // --- 3. Applying Pagination & Sorting ---
+        
         int skip = (page - 1) * pageSize;
 
         var results = await query
@@ -185,8 +180,7 @@ namespace EShopBuilder.Catalog.API.Controllers;
             .Skip(skip)
             .Take(pageSize)
             .ToListAsync();
-
-        // --- 4. Returning Paginated Response ---
+        
         return Ok(new 
         {
             TotalItems = totalItems,
@@ -195,5 +189,35 @@ namespace EShopBuilder.Catalog.API.Controllers;
             PageSize = pageSize,
             Data = results
         });
+    }
+    
+    [Authorize]
+    [HttpPut("ReduceStock")]
+    public async Task<IActionResult> ReduceStock([FromBody] List<StockUpdateDto> items)
+    {
+        if (items == null || !items.Any())
+        {
+            return BadRequest("No items provided for stock reduction.");
+        }
+
+        foreach (var item in items)
+        {
+            var product = await _context.Products.FindAsync(item.ProductId);
+        
+            if (product != null)
+            {
+                if (product.StockQuantity >= item.Quantity)
+                {
+                    product.StockQuantity -= item.Quantity;
+                }
+                else
+                {
+                    product.StockQuantity = 0;
+                }
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        return Ok(new { message = "Inventory updated based on the order." });
     }
 }

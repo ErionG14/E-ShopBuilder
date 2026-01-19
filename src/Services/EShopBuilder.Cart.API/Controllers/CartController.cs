@@ -125,4 +125,24 @@ public class CartController : ControllerBase
 
         return Ok(new { message = "Item removed from cart." });
     }
+    
+    // DELETE: api/Cart/ClearCart
+    [HttpDelete("ClearCart")]
+    [Authorize]
+    public async Task<IActionResult> ClearCart()
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        // Find all items belonging to this user
+        var userItems = _context.CartItems.Where(c => c.UserId == userId);
+
+        if (await userItems.AnyAsync())
+        {
+            _context.CartItems.RemoveRange(userItems);
+            await _context.SaveChangesAsync();
+        }
+
+        return Ok(new { message = "Cart cleared successfully!" });
+    }
 }
