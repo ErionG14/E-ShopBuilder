@@ -69,6 +69,12 @@ public class ServiceConfiguration
                 
                 options.Events = new JwtBearerEvents
                 {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["jwt_token"];
+                        return Task.CompletedTask;
+                    },
+                    
                     OnChallenge = context =>
                     {
                         context.HandleResponse();
@@ -85,7 +91,8 @@ public class ServiceConfiguration
             {
                 policy.WithOrigins("http://localhost:3000")
                       .AllowAnyHeader()
-                      .AllowAnyMethod();
+                      .AllowAnyMethod()
+                      .AllowCredentials();
             });
         });
     }
