@@ -1,17 +1,17 @@
 ﻿using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using EShopBuilder.Catalog.API.Data;
+using EShopBuilder.Order.API.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace EShopBuilder.Catalog.API.Services;
+namespace EShopBuilder.Order.API.Services;
 
 public class ServiceConfiguration
 {
-    public static void ConfigureServices(WebApplicationBuilder builder)
+       public static void ConfigureServices(WebApplicationBuilder builder)
     {
         builder.Services.AddControllers().AddJsonOptions(options =>
         {
@@ -23,7 +23,7 @@ public class ServiceConfiguration
         
         builder.Services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc("v1", new OpenApiInfo { Title = "E-ShopBuilder Catalog API", Version = "v1" });
+            option.SwaggerDoc("v1", new OpenApiInfo { Title = "E-ShopBuilder Order API", Version = "v1" });
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -46,7 +46,7 @@ public class ServiceConfiguration
         });
         
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        builder.Services.AddDbContext<CatalogDbContext>(options =>
+        builder.Services.AddDbContext<OrderDbContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
         
         var jwtSettings = builder.Configuration.GetSection("JwtTokenSettings");
@@ -90,9 +90,9 @@ public class ServiceConfiguration
             options.AddPolicy("_myAllowSpecificOrigins", policy =>
             {
                 policy.WithOrigins("http://localhost:3000")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
             });
         });
     }

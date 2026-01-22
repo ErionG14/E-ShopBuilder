@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using EShopBuilder.Catalog.API.Data;
+using EShopBuilder.Cart.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace EShopBuilder.Catalog.API.Services;
+namespace EShopBuilder.Cart.API.Services;
 
 public class ServiceConfiguration
 {
@@ -23,7 +23,7 @@ public class ServiceConfiguration
         
         builder.Services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc("v1", new OpenApiInfo { Title = "E-ShopBuilder Catalog API", Version = "v1" });
+            option.SwaggerDoc("v1", new OpenApiInfo { Title = "E-ShopBuilder Cart API", Version = "v1" });
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -46,7 +46,7 @@ public class ServiceConfiguration
         });
         
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        builder.Services.AddDbContext<CatalogDbContext>(options =>
+        builder.Services.AddDbContext<CartDbContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
         
         var jwtSettings = builder.Configuration.GetSection("JwtTokenSettings");

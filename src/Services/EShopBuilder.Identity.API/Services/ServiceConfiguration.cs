@@ -25,7 +25,7 @@ public static class ServiceConfiguration
 
         builder.Services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc("v1", new OpenApiInfo { Title = "E-ShopBuilder", Version = "v1" });
+            option.SwaggerDoc("v1", new OpenApiInfo { Title = "E-ShopBuilder Identity API", Version = "v1" });
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -85,6 +85,13 @@ public static class ServiceConfiguration
                 };
                 options.Events = new JwtBearerEvents
                 {
+                    OnMessageReceived = context =>
+                    {
+                        // Cookies configuration
+                        context.Token = context.Request.Cookies["jwt_token"];
+                        return Task.CompletedTask;
+                    },
+                    
                     OnChallenge = context =>
                     {
                         context.HandleResponse(); // Prevent the default challenge
@@ -119,7 +126,8 @@ public static class ServiceConfiguration
                     {
                         policy.WithOrigins("http://localhost:3000")
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
+                            .AllowAnyMethod()
+                            .AllowCredentials();
                     });
             });
             
