@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/shared/Navbar/Navbar";
 import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
 import Footer from "./components/shared/Footer/Footer";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -18,16 +20,35 @@ const App = () => {
             <Navbar />
             <main className="flex-grow">
               <Routes>
+                {/* Public Routes */}
                 <Route path="/" element={<Home />} />
-                <Route path="/login" element={<div className="p-8 text-center">Login Page Placeholder</div>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
 
-                {/* Protected Routes Example */}
-                <Route element={<ProtectedRoute allowedRoles={['admin', 'user']} />}>
-                  <Route path="/dashboard" element={<div className="p-8 text-center">Dashboard (Protected)</div>} />
+                {/* Owner Dashboard - Specific to Store Management */}
+                <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
+                  {/* <Route path="/owner-dashboard" element={<OwnerDashboard />} /> */}
+                  {/* <Route
+                    path="/manage-my-products"
+                    element={<ManageStoreProducts />}
+                  /> */}
                 </Route>
 
-                {/* 404 */}
-                <Route path="*" element={<div className="p-8 text-center">404 Not Found</div>} />
+                {/* Admin Dashboard - Global Platform Management */}
+                <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+                  {/* <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                  <Route path="/manage-users" element={<UserManagement />} /> */}
+                </Route>
+
+                {/* Common Protected Routes for everyone */}
+                <Route
+                  element={
+                    <ProtectedRoute allowedRoles={["user", "owner", "admin"]} />
+                  }
+                >
+                  {/* <Route path="/profile" element={<UserProfile />} />
+                  <Route path="/orders" element={<OrderHistory />} /> */}
+                </Route>
               </Routes>
             </main>
             <Footer />

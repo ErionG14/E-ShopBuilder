@@ -1,39 +1,31 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import apiClient from '../services/apiClient';
+import React, { createContext, useState, useEffect } from "react";
+import apiClient from "../services/apiClient";
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        // Check for existing token and validate
-        const token = localStorage.getItem('token');
-        if (token) {
-            // Mock validation or API call
-            // apiClient.get('/auth/me').then(res => setUser(res.data)).catch(() => localStorage.removeItem('token'));
-            // For now, assuming token implies user, but we need real logic
-        }
-        setLoading(false);
-    }, []);
+  const checkUserStatus = async () => {
+    try {
+      // This calls the /api/Auth/me endpoint we discussed
+      const response = await apiClient.get("/identity/Auth/me");
+      setUser(response.data);
+    } catch (error) {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const login = async (credentials) => {
-        // const response = await apiClient.post('/auth/login', credentials);
-        // localStorage.setItem('token', response.data.token);
-        // setUser(response.data.user);
-    };
+  useEffect(() => {
+    checkUserStatus();
+  }, []);
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
-    };
-
-    return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ user, setUser, checkUserStatus, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
-
-export const useAuth = () => useContext(AuthContext);

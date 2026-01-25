@@ -1,21 +1,22 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Navigate, Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export const ProtectedRoute = ({ allowedRoles }) => {
-    const { user, loading } = useAuth();
+  const { user, loading } = useContext(AuthContext);
 
-    if (loading) {
-        return <div>Loading...</div>; // Replace with proper loading spinner
-    }
+  if (loading) return <div>Checking session...</div>;
 
-    if (!user) {
-        return <Navigate to="/login" replace />;
-    }
+  // If no user, redirect to login
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
-    if (allowedRoles && !allowedRoles.includes(user.role)) {
-        return <Navigate to="/unauthorized" replace />;
-    }
+  // If roles are specified, check if the user has the right one
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
-    return <Outlet />;
+  // "Outlet" renders the child routes (like /dashboard)
+  return <Outlet />;
 };
