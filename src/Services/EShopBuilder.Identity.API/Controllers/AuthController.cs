@@ -1,6 +1,8 @@
 ﻿using EShopBuilder.Identity.API.DTO;
 using EShopBuilder.Identity.API.Models;
 using EShopBuilder.Identity.API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -65,14 +67,11 @@ public class AuthController : ControllerBase
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
-        // Read tokens from the cookies
         var refreshToken = Request.Cookies["refresh_token"];
-        var userName = User.Identity?.Name; // Or get this from the expired token if needed
+        var userName = User.Identity?.Name;
 
         if (string.IsNullOrEmpty(refreshToken)) return BadRequest("Refresh token missing");
-
-        // Important: Since the user is likely unauthorized (expired token), 
-        // you may need to find the user by the RefreshToken itself in the DB
+        
         var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
 
         if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
@@ -102,6 +101,27 @@ public class AuthController : ControllerBase
         Response.Cookies.Append("refresh_token", newRefreshToken, cookieOptions);
 
         return Ok(new { Message = "Token refreshed" });
+    }
+    
+    [HttpGet("me")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User,Owner,Admin")]
+    public async Task<IActionResult> GetCurrentUser()
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) return NotFound();
+        
+        var roles = await _userManager.GetRolesAsync(user);
+        
+        return Ok(new
+        {
+            username = user.UserName,
+            email = user.Email,
+            role = roles.FirstOrDefault() ?? "User"
+        });
     }
     
     [HttpPost("logout")]
