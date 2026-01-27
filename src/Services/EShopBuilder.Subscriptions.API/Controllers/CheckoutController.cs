@@ -1,15 +1,26 @@
 ﻿using System.Security.Claims;
+using EShopBuilder.Subscriptions.API.Data.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Stripe.Checkout;
 
 namespace EShopBuilder.Subscriptions.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Owner")]
 public class CheckoutController : ControllerBase
 {
+    
+    private readonly SubscriptionDbContext _context;
+
+    public CheckoutController(SubscriptionDbContext context)
+    {
+        _context = context;
+    }
+    
     [HttpPost("create-session")]
     public async Task<IActionResult> CreateCheckoutSession([FromBody] string planType)
     {
@@ -58,5 +69,26 @@ public class CheckoutController : ControllerBase
         {
             return BadRequest(new { message = e.Message });
         }
+    }
+    
+    [HttpGet("status")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Owner")]
+    public async Task<IActionResult> GetStatus()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    
+        var subscription = await _context.Subscriptions
+            .FirstOrDefaultAsync(s => s.UserId == userId);
+
+        if (subscription == null || !subscription.IsActive)
+        {
+            return Ok(new { isActive = false, plan = "None" });
+        }
+
+        return Ok(new { 
+            isActive = true, 
+            plan = subscription.PlanType,
+            expiryDate = subscription.ExpiryDate 
+        });
     }
 }

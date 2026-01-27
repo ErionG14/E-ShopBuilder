@@ -1,5 +1,6 @@
 ﻿using EShopBuilder.Subscriptions.API.Data.Configuration;
 using EShopBuilder.Subscriptions.API.Models;
+using EShopBuilder.Subscriptions.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -14,11 +15,16 @@ namespace EShopBuilder.Subscriptions.API.Controllers;
 public class StripeWebhookController : ControllerBase
 {
     private readonly SubscriptionDbContext _context;
+    private readonly IIdentityService _identityService;
     private readonly string _webhookSecret;
 
-    public StripeWebhookController(SubscriptionDbContext context, IOptions<StripeSettings> stripeSettings)
+    public StripeWebhookController(
+        SubscriptionDbContext context, 
+        IOptions<StripeSettings> stripeSettings,
+        IIdentityService identityService) 
     {
         _context = context;
+        _identityService = identityService; // Now the compiler recognizes this variable
         _webhookSecret = stripeSettings.Value.WebhookSecret;
     }
 
@@ -55,6 +61,13 @@ public class StripeWebhookController : ControllerBase
         if (!session.Metadata.TryGetValue("UserId", out var userId))
         {
             Console.WriteLine("Webhook error: No UserId in metadata.");
+            return;
+        }
+        
+        var isOwner = await _identityService.CheckUserRole(userId, "Owner"); 
+        if (!isOwner)
+        {
+            Console.WriteLine($"Unauthorized: User {userId} is not an Owner. Subscription ignored.");
             return;
         }
         
