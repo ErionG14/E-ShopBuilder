@@ -8,6 +8,8 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Footer from "./components/shared/Footer/Footer";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import SuccessPage from "./pages/success/SuccessPage";
+import OrderHistory from "./pages/orders/OrderHistory";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +51,8 @@ const App = () => {
                   {/* <Route path="/profile" element={<UserProfile />} />
                   <Route path="/orders" element={<OrderHistory />} /> */}
                 </Route>
+                <Route path="/success" element={<SuccessPage />} />
+                <Route path="/orders" element={<OrderHistory />} />
               </Routes>
             </main>
             <Footer />

@@ -9,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShopBuilder.Identity.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api")]
+
 
 public class UserController : ControllerBase
 {
@@ -160,6 +161,33 @@ public class UserController : ControllerBase
         if (user == null) return NotFound(new { Message = "User not found." });
 
         return Ok(user);
+    }
+    
+    [HttpGet("check-role")]
+    public async Task<IActionResult> CheckRole(string userId, string role)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+    
+        if (user == null) 
+        {
+            _logger.LogWarning("CheckRole: User {UserId} not found.", userId);
+            return NotFound(new { message = "User not found" });
+        }
+        
+        var userRoles = await _userManager.GetRolesAsync(user);
+        
+        var hasRole = userRoles.Any(r => r.Equals(role, StringComparison.OrdinalIgnoreCase));
+
+        if (hasRole)
+        {
+            _logger.LogInformation("CheckRole: User {UserId} verified as {Role}.", userId, role);
+            return Ok(); 
+        }
+        
+        _logger.LogWarning("CheckRole: User {UserId} does not have role {Role}. Found roles: {Roles}", 
+            userId, role, string.Join(", ", userRoles));
+
+        return Forbid(); 
     }
 
     // Update user (Admin only)

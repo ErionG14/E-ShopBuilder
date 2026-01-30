@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShopBuilder.Order.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api")]
 [ApiController]
 [Authorize]
 public class OrderController : ControllerBase
@@ -81,5 +81,28 @@ public class OrderController : ControllerBase
             .ToListAsync();
 
         return Ok(orders);
+    }
+    
+    [AllowAnonymous] // Allows the Payment Microservice to call this without a JWT token
+    [HttpPut("{id}/status")]
+    public async Task<IActionResult> UpdateStatus(int id, [FromBody] StatusUpdateDto dto)
+    {
+        var order = await _context.Orders.FindAsync(id);
+    
+        if (order == null) 
+        {
+            return NotFound($"Order with ID {id} not found.");
+        }
+
+        order.Status = dto.Status;
+        await _context.SaveChangesAsync();
+
+        return Ok(new { Message = $"Order {id} updated to {dto.Status}" });
+    }
+
+// Add this DTO at the bottom of the file or in your DTO folder
+    public class StatusUpdateDto
+    {
+        public string Status { get; set; } = string.Empty;
     }
 }

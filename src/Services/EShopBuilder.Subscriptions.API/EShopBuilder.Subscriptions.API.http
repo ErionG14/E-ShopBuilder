@@ -1,0 +1,6 @@
+@EShopBuilder.Subscriptions.API_HostAddress = http://localhost:5285
+
+GET {{EShopBuilder.Subscriptions.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

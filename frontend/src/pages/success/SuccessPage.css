@@ -1,0 +1,117 @@
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+    background-color: #fcfcfc;
+}
+
+.success-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.success-title {
+    color: #28a745;
+    font-size: 2rem;
+    margin-top: 20px;
+    font-weight: 700;
+}
+
+.success-subtitle {
+    color: #6c757d;
+    margin-bottom: 30px;
+}
+
+.order-details {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.order-label {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #adb5bd;
+    font-weight: 600;
+}
+
+.order-number {
+    margin: 10px 0;
+    font-size: 1.5rem;
+    color: #343a40;
+}
+
+.primary-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.secondary-btn {
+    background: transparent;
+    color: #6c757d;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    background-color: #0056b3;
+}
+
+/* --- Checkmark Animation --- */
+.checkmark-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #28a745;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #28a745;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #28a745;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke { 100% { stroke-dashoffset: 0; } }
+@keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+@keyframes fill { 100% { box-shadow: inset 0px 0px 0px 40px #fff; } }
