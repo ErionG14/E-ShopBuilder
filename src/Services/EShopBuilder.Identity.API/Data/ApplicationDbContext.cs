@@ -30,9 +30,20 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
         if (!string.IsNullOrEmpty(adminEmail) && !string.IsNullOrEmpty(adminPassword))
         {
+            
+            var ADMIN_ID = Guid.NewGuid().ToString();
+            var ROLE_ID = Guid.NewGuid().ToString();
+            
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+            {
+                Id = ROLE_ID,
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            });
+            
             var adminUser = new User
             {
-                Id = Guid.NewGuid().ToString(), // Generate a unique ID
+                Id = ADMIN_ID,
                 UserName = adminEmail,
                 Name = "Admin",
                 Surname = "admin",
@@ -48,6 +59,12 @@ public class ApplicationDbContext : IdentityDbContext<User>
             adminUser.PasswordHash = hasher.HashPassword(adminUser, adminPassword);
 
             modelBuilder.Entity<User>().HasData(adminUser);
+            
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                RoleId = ROLE_ID,
+                UserId = ADMIN_ID
+            });
         }
     }
 }

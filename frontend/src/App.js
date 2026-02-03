@@ -10,6 +10,7 @@ import Footer from "./components/shared/Footer/Footer";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import SuccessPage from "./pages/success/SuccessPage";
 import OrderHistory from "./pages/orders/OrderHistory";
+import UserProfile from "./pages/profile/UserProfile";
 
 const queryClient = new QueryClient();
 
@@ -47,12 +48,10 @@ const App = () => {
                   element={
                     <ProtectedRoute allowedRoles={["user", "owner", "admin"]} />
                   }
-                >
-                  {/* <Route path="/profile" element={<UserProfile />} />
-                  <Route path="/orders" element={<OrderHistory />} /> */}
-                </Route>
+                ></Route>
                 <Route path="/success" element={<SuccessPage />} />
                 <Route path="/orders" element={<OrderHistory />} />
+                <Route path="/profile" element={<UserProfile />} />
               </Routes>
             </main>
             <Footer />
