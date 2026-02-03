@@ -59,8 +59,16 @@ const Navbar = () => {
               className="flex items-center space-x-2 focus:outline-none hover:bg-gray-100 p-2 rounded-full transition"
             >
               {/* Profile Circle */}
-              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm">
-                {user.username?.charAt(0).toUpperCase()}
+              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm bg-blue-600 text-white font-bold">
+                {user.image ? (
+                  <img
+                    src={user.image}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  user.username?.charAt(0).toUpperCase()
+                )}
               </div>
               <span className="text-gray-700 font-medium hidden sm:block">
                 {user.username}

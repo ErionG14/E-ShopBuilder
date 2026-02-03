@@ -11,6 +11,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import SuccessPage from "./pages/success/SuccessPage";
 import OrderHistory from "./pages/orders/OrderHistory";
 import UserProfile from "./pages/profile/UserProfile";
+import EditProfileForm from "./pages/profile/EditProfileForm";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => {
                 <Route path="/success" element={<SuccessPage />} />
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/profile" element={<UserProfile />} />
+                <Route path="/edit-profile" element={<EditProfileForm />} />
               </Routes>
             </main>
             <Footer />
