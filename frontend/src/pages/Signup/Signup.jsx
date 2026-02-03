@@ -35,8 +35,7 @@ const Signup = () => {
     }
 
     try {
-      // Sending the exact payload your Swagger expects
-      await apiClient.post("/identity/User/register", formData);
+      await apiClient.post("/identity/register", formData);
       navigate("/login");
     } catch (err) {
       setError(
