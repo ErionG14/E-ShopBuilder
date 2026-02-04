@@ -52,9 +52,7 @@ const UserProfile = () => {
         formData,
       );
       const imageUrl = cloudRes.data.secure_url;
-
-      // 2. Explicitly map the DTO to avoid 400 Bad Request
-      // Ensure required fields like Email and Username are passed from the current user state
+      // 2. Update User Profile with new image URL
       await axios.put(
         "http://localhost:5174/api/identity/UpdateMyProfile",
         {
@@ -63,7 +61,7 @@ const UserProfile = () => {
           name: user.name || "",
           surname: user.surname || "",
           address: user.address || "",
-          birthdate: user.birthdate || null, // Ensure date is null or valid string, not empty string
+          birthdate: user.birthdate || null, 
           gender: user.gender || "",
           phoneNumber: user.phoneNumber || "",
           image: imageUrl,
@@ -74,7 +72,6 @@ const UserProfile = () => {
       setUser((prev) => ({ ...prev, image: imageUrl }));
       alert("Profile picture updated!");
     } catch (err) {
-      // Log the actual validation errors from the backend to the console
       console.error("Update failed:", err.response?.data);
       alert("Failed to update photo. Check console for validation details.");
     } finally {

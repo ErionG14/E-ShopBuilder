@@ -15,7 +15,6 @@ const EditProfileForm = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // State matches your UserUpdateByUserDTO exactly
   const [formData, setFormData] = useState({
     username: "",
     email: "",
