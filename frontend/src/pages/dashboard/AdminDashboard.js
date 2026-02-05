@@ -49,7 +49,20 @@ const AdminDashboard = () => {
       );
       setUsers(response.data);
     } catch (err) {
-      toast.error("Failed to fetch users");
+      toast.error("Failed to fetch users", {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     } finally {
       setLoading(false);
     }
@@ -92,7 +105,20 @@ const AdminDashboard = () => {
     } catch (err) {
       const serverMessage =
         err.response?.data?.Message || "Check console for validation errors.";
-      toast.error(serverMessage);
+      toast.error("Failed to add user: " + serverMessage, {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 
@@ -134,7 +160,20 @@ const AdminDashboard = () => {
       setIsModalOpen(false);
       fetchUsers();
     } catch (err) {
-      toast.error("Failed to update user.");
+      toast.error("Failed to update user", {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 
@@ -159,7 +198,20 @@ const AdminDashboard = () => {
       setUserToDelete(null);
       fetchUsers();
     } catch (err) {
-      toast.error("Delete failed");
+      toast.error("Failed to delete user", {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 
@@ -335,7 +387,7 @@ const AdminDashboard = () => {
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in duration-300">
-            <div className="bg-blue-600 p-6 text-white flex justify-between items-center">
+            <div className="bg-gray-900 p-6 text-white flex justify-between items-center">
               <h3 className="text-xl font-bold">Add New User</h3>
               <button onClick={() => setIsAddModalOpen(false)}>
                 <HiX className="text-2xl" />
