@@ -191,7 +191,7 @@ public class UserController : ControllerBase
     }
 
     // Update user (Admin only)
-    [HttpPut("UpdateUser{id}")]
+    [HttpPut("UpdateUser/{id}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public async Task<IActionResult> UpdateUser(string id, [FromBody]UserUpdateDto model)
     {
@@ -317,7 +317,7 @@ public class UserController : ControllerBase
     }
 
     // Delete user (Admin only)
-    [HttpDelete("DeleteUser{id}")]
+    [HttpDelete("DeleteUser/{id}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public async Task<IActionResult> DeleteUser(string id)
     {

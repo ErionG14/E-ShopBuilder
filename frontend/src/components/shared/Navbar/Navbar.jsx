@@ -94,7 +94,7 @@ const Navbar = () => {
                   Manage Account
                 </div>
 
-                {user.role === "admin" && (
+                {user.role === "Admin" && (
                   <Link
                     to="/admin-dashboard"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -103,7 +103,7 @@ const Navbar = () => {
                     Admin Panel
                   </Link>
                 )}
-                {user.role === "owner" && (
+                {user.role === "Owner" && (
                   <Link
                     to="/owner-dashboard"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

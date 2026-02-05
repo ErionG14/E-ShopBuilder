@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 import {
   HiArrowLeft,
   HiSave,
@@ -8,6 +9,7 @@ import {
   HiPhone,
   HiLocationMarker,
   HiCake,
+  HiBadgeCheck,
 } from "react-icons/hi";
 
 const EditProfileForm = () => {
@@ -60,11 +62,38 @@ const EditProfileForm = () => {
         formData,
         { withCredentials: true },
       );
-      alert("Profile updated successfully!");
+      toast.success("Profile updated!", {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "bold",
+          borderRadius: "12px",
+        },
+        progressStyle: {
+          background: "#22c55e",
+        },
+        icon: <HiBadgeCheck style={{ color: "#22c55e", fontSize: "24px" }} />,
+      });
       navigate("/profile");
     } catch (error) {
       console.error("Update failed", error);
-      alert(error.response?.data?.Message || "Failed to update profile.");
+      const errorMessage =
+        error.response?.data?.Message || "Failed to update profile.";
+
+      toast.error(errorMessage, {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     } finally {
       setSaving(false);
     }
