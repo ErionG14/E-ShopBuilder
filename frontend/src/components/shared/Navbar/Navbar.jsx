@@ -5,15 +5,15 @@ import apiClient from "../../../services/apiClient";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { user, setUser } = useContext(AuthContext); //
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); //
+  const { user, setUser } = useContext(AuthContext);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await apiClient.post("/identity/Auth/logout"); //
-      setUser(null); //
-      setIsDropdownOpen(false); //
+      await apiClient.post("/identity/Auth/logout");
+      setUser(null);
+      setIsDropdownOpen(false);
       navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);

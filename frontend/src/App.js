@@ -14,6 +14,7 @@ import OrderHistory from "./pages/orders/OrderHistory";
 import UserProfile from "./pages/profile/UserProfile";
 import EditProfileForm from "./pages/profile/EditProfileForm";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
 
 const queryClient = new QueryClient();
 
@@ -32,8 +33,8 @@ const App = () => {
                 <Route path="/signup" element={<Signup />} />
 
                 {/* Owner Dashboard - Specific to Store Management */}
-                <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
-                  {/* <Route path="/owner-dashboard" element={<OwnerDashboard />} /> */}
+                <Route element={<ProtectedRoute allowedRoles={["Owner"]} />}>
+                  <Route path="/owner-dashboard" element={<OwnerDashboard />} />
                   {/* <Route
                     path="/manage-my-products"
                     element={<ManageStoreProducts />}
