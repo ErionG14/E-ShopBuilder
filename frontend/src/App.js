@@ -15,6 +15,8 @@ import UserProfile from "./pages/profile/UserProfile";
 import EditProfileForm from "./pages/profile/EditProfileForm";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
+import Marketplace from "./pages/marketplace/Marketplace";
+import PublicShop from "./pages/marketplace/PublicShop";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +55,8 @@ const App = () => {
                     <ProtectedRoute allowedRoles={["User", "Owner", "Admin"]} />
                   }
                 ></Route>
+                <Route path="/marketplace" element={<Marketplace />} />
+                <Route path="/shops/:slug" element={<PublicShop />} />
                 <Route path="/success" element={<SuccessPage />} />
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/profile" element={<UserProfile />} />

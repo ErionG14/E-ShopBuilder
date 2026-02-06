@@ -49,6 +49,33 @@ public class StoreController : ControllerBase
 
         return Ok(new { Message = "Store created successfully!", StoreId = newStore.Id });
     }
+   
+    [HttpGet("All")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetAllActiveStores()
+    {
+        var stores = await _context.Stores
+            .Where(s => s.IsActive)
+            .Select(s => new {
+                s.Id,
+                s.Name,
+                s.Slug,
+                s.Description,
+                s.CreatedAt
+            })
+            .ToListAsync();
+
+        return Ok(stores);
+    }
+    
+    [HttpGet("BySlug/{slug}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetStoreBySlug(string slug)
+    {
+        var store = await _context.Stores.FirstOrDefaultAsync(s => s.Slug == slug && s.IsActive);
+        if (store == null) return NotFound();
+        return Ok(store);
+    }
     
     [HttpGet("MyStore")]
     public async Task<IActionResult> GetMyStore()

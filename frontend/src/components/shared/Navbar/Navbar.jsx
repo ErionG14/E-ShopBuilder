@@ -27,9 +27,12 @@ const Navbar = () => {
           E-ShopBuilder
         </Link>
         <div className="ml-6 space-x-4 hidden md:flex">
-          <button className="text-gray-700 hover:text-gray-900">
-            Customization
-          </button>
+          <Link
+            to="/marketplace"
+            className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+          >
+            Marketplace
+          </Link>
           <button className="text-gray-700 hover:text-gray-900">Hosting</button>
         </div>
       </div>

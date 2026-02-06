@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShopBuilder.Catalog.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api")]
 [ApiController]
         public class ProductsController : ControllerBase
 {

@@ -64,7 +64,7 @@ const OwnerDashboard = () => {
     };
 
     try {
-      await axios.post("http://localhost:5070/api/Store/Create", payload, {
+      await axios.post("http://localhost:5174/api/Store/Create", payload, {
         withCredentials: true,
       });
       toast.success("New store launched!", {
@@ -98,7 +98,7 @@ const OwnerDashboard = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `http://localhost:5070/api/Store/Update/${editingStore.id}`,
+        `http://localhost:5174/api/Store/Update/${editingStore.id}`,
         formData,
         { withCredentials: true },
       );
@@ -114,7 +114,7 @@ const OwnerDashboard = () => {
     const action = currentStore.isActive ? "Deactivate" : "Activate";
     try {
       await axios.patch(
-        `http://localhost:5070/api/Store/${action}/${currentStore.id}`,
+        `http://localhost:5174/api/Store/${action}/${currentStore.id}`,
         {},
         { withCredentials: true },
       );
@@ -129,7 +129,7 @@ const OwnerDashboard = () => {
     if (!storeToDelete) return;
     try {
       await axios.delete(
-        `http://localhost:5070/api/Store/Delete/${storeToDelete.id}`,
+        `http://localhost:5174/api/Store/Delete/${storeToDelete.id}`,
         {
           withCredentials: true,
         },
