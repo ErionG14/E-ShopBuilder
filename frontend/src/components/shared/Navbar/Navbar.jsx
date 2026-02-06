@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-50">
       <div className="flex items-center">
-        <Link to="/" className="text-green-500 text-2xl font-bold">
+        <Link to="/" className="text-blue-500 text-2xl font-bold">
           E-ShopBuilder
         </Link>
         <div className="ml-6 space-x-4 hidden md:flex">
@@ -34,7 +34,18 @@ const Navbar = () => {
           >
             Marketplace
           </Link>
-          <button className="text-gray-700 hover:text-gray-900">Hosting</button>
+          <Link
+            to="/hosting"
+            className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+          >
+            Hosting
+          </Link>
+          <Link
+            to="/about-us"
+            className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+          >
+            About Us
+          </Link>
         </div>
       </div>
 

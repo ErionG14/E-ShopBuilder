@@ -19,6 +19,8 @@ import Marketplace from "./pages/marketplace/Marketplace";
 import PublicShop from "./pages/marketplace/PublicShop";
 import ProductManagement from "./pages/dashboard/ProductManagement";
 import CartPage from "./pages/cart/CartPage";
+import AboutUs from "./pages/about-us/AboutUs";
+import Hosting from "./pages/hosting/Hosting";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +70,8 @@ const App = () => {
                 <Route path="/profile" element={<UserProfile />} />
                 <Route path="/edit-profile" element={<EditProfileForm />} />
                 <Route path="/cart" element={<CartPage />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route path="/hosting" element={<Hosting />} />
               </Routes>
               <ToastContainer position="bottom-right" theme="colored" />
             </main>
