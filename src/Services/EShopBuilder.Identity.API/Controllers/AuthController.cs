@@ -120,7 +120,8 @@ public class AuthController : ControllerBase
         {
             username = user.UserName,
             email = user.Email,
-            role = roles.FirstOrDefault() ?? "User"
+            role = roles.FirstOrDefault() ?? "User",
+            user.Image
         });
     }
     

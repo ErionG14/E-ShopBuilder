@@ -5,15 +5,15 @@ import apiClient from "../../../services/apiClient";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { user, setUser } = useContext(AuthContext); //
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); //
+  const { user, setUser } = useContext(AuthContext);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await apiClient.post("/identity/Auth/logout"); //
-      setUser(null); //
-      setIsDropdownOpen(false); //
+      await apiClient.post("/identity/Auth/logout");
+      setUser(null);
+      setIsDropdownOpen(false);
       navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);
@@ -59,8 +59,16 @@ const Navbar = () => {
               className="flex items-center space-x-2 focus:outline-none hover:bg-gray-100 p-2 rounded-full transition"
             >
               {/* Profile Circle */}
-              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm">
-                {user.username?.charAt(0).toUpperCase()}
+              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm bg-blue-600 text-white font-bold">
+                {user.image ? (
+                  <img
+                    src={user.image}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  user.username?.charAt(0).toUpperCase()
+                )}
               </div>
               <span className="text-gray-700 font-medium hidden sm:block">
                 {user.username}
@@ -86,7 +94,7 @@ const Navbar = () => {
                   Manage Account
                 </div>
 
-                {user.role === "admin" && (
+                {user.role === "Admin" && (
                   <Link
                     to="/admin-dashboard"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -95,7 +103,7 @@ const Navbar = () => {
                     Admin Panel
                   </Link>
                 )}
-                {user.role === "owner" && (
+                {user.role === "Owner" && (
                   <Link
                     to="/owner-dashboard"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

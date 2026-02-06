@@ -25,30 +25,20 @@ public class StoreController : ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> CreateStore([FromBody] StoreCreateDto model)
     {
-        // 1. Extract the unique User ID (Subject) from the token. 
-        // This is the link between your Identity DB and your Store DB.
+
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(userId))
         {
             return Unauthorized(new { Message = "User ID not found in token." });
         }
-
-        // 2. Check if this user already has a store (optional, but good for business logic)
-        var existingStore = _context.Stores.Any(s => s.UserId == userId);
-        if (existingStore)
-        {
-            return BadRequest(new { Message = "User already owns a store." });
-        }
-
-        // 3. Create the Store Entity
+        
         var newStore = new StoreEntity
         {
             Name = model.Name,
-            // Slugs should be lowercase and have no spaces for valid URLs
             Slug = model.Slug.ToLower().Replace(" ", "-"), 
             Description = model.Description,
-            UserId = userId, // This is where the 'UserId' is saved as 'OwnerId'
+            UserId = userId,
             CreatedAt = DateTime.UtcNow,
             IsActive = true
         };
@@ -64,11 +54,11 @@ public class StoreController : ControllerBase
     public async Task<IActionResult> GetMyStore()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var store = await _context.Stores.FirstOrDefaultAsync(s => s.UserId == userId);
-
-        if (store == null) return NotFound(new { Message = "You don't have a store yet." });
-
-        return Ok(store);
+        var stores = await _context.Stores
+            .Where(s => s.UserId == userId)
+            .ToListAsync();
+        
+        return Ok(stores);
     }
     
     // 5. PATCH: api/Store/Activate/{id}

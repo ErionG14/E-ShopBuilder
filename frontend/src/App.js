@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/shared/Navbar/Navbar";
 import Home from "./pages/Home/Home";
@@ -11,6 +12,9 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import SuccessPage from "./pages/success/SuccessPage";
 import OrderHistory from "./pages/orders/OrderHistory";
 import UserProfile from "./pages/profile/UserProfile";
+import EditProfileForm from "./pages/profile/EditProfileForm";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
 
 const queryClient = new QueryClient();
 
@@ -29,8 +33,8 @@ const App = () => {
                 <Route path="/signup" element={<Signup />} />
 
                 {/* Owner Dashboard - Specific to Store Management */}
-                <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
-                  {/* <Route path="/owner-dashboard" element={<OwnerDashboard />} /> */}
+                <Route element={<ProtectedRoute allowedRoles={["Owner"]} />}>
+                  <Route path="/owner-dashboard" element={<OwnerDashboard />} />
                   {/* <Route
                     path="/manage-my-products"
                     element={<ManageStoreProducts />}
@@ -38,21 +42,23 @@ const App = () => {
                 </Route>
 
                 {/* Admin Dashboard - Global Platform Management */}
-                <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-                  {/* <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                  <Route path="/manage-users" element={<UserManagement />} /> */}
+                <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
+                  <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                  {/* <Route path="/manage-users" element={<UserManagement />} /> */}
                 </Route>
 
                 {/* Common Protected Routes for everyone */}
                 <Route
                   element={
-                    <ProtectedRoute allowedRoles={["user", "owner", "admin"]} />
+                    <ProtectedRoute allowedRoles={["User", "Owner", "Admin"]} />
                   }
                 ></Route>
                 <Route path="/success" element={<SuccessPage />} />
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/profile" element={<UserProfile />} />
+                <Route path="/edit-profile" element={<EditProfileForm />} />
               </Routes>
+              <ToastContainer position="bottom-right" theme="colored" />
             </main>
             <Footer />
           </div>
