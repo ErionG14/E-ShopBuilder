@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
 import Marketplace from "./pages/marketplace/Marketplace";
 import PublicShop from "./pages/marketplace/PublicShop";
+import ProductManagement from "./pages/dashboard/ProductManagement";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,10 @@ const App = () => {
                 {/* Owner Dashboard - Specific to Store Management */}
                 <Route element={<ProtectedRoute allowedRoles={["Owner"]} />}>
                   <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+                  <Route
+                    path="/owner-products"
+                    element={<ProductManagement />}
+                  />
                   {/* <Route
                     path="/manage-my-products"
                     element={<ManageStoreProducts />}

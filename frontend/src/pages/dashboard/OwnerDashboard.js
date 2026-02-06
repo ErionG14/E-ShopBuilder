@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import {
   HiBuildingStorefront,
   HiPencil,
@@ -42,19 +43,19 @@ const OwnerDashboard = () => {
         setStores([]);
       } else {
         toast.error("Error loading stores", {
-                style: {
-                  background: "white",
-                  color: "#1f2937",
-                  fontWeight: "600",
-                  borderRadius: "12px",
-                  border: "1px solid #fee2e2",
-                },
-                progressStyle: {
-                  background: "#ef4444",
-                },
-                icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-                theme: "light",
-              });
+          style: {
+            background: "white",
+            color: "#1f2937",
+            fontWeight: "600",
+            borderRadius: "12px",
+            border: "1px solid #fee2e2",
+          },
+          progressStyle: {
+            background: "#ef4444",
+          },
+          icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+          theme: "light",
+        });
       }
     } finally {
       setLoading(false);
@@ -140,19 +141,19 @@ const OwnerDashboard = () => {
       fetchMyStores();
     } catch (err) {
       toast.error("Failed to update store", {
-              style: {
-                background: "white",
-                color: "#1f2937",
-                fontWeight: "600",
-                borderRadius: "12px",
-                border: "1px solid #fee2e2",
-              },
-              progressStyle: {
-                background: "#ef4444",
-              },
-              icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-              theme: "light",
-            });
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 
@@ -177,19 +178,19 @@ const OwnerDashboard = () => {
       fetchMyStores();
     } catch (err) {
       toast.error("Status update failed", {
-              style: {
-                background: "white",
-                color: "#1f2937",
-                fontWeight: "600",
-                borderRadius: "12px",
-                border: "1px solid #fee2e2",
-              },
-              progressStyle: {
-                background: "#ef4444",
-              },
-              icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-              theme: "light",
-            });
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 
@@ -217,19 +218,19 @@ const OwnerDashboard = () => {
       fetchMyStores();
     } catch (err) {
       toast.error("Failed to delete store", {
-              style: {
-                background: "white",
-                color: "#1f2937",
-                fontWeight: "600",
-                borderRadius: "12px",
-                border: "1px solid #fee2e2",
-              },
-              progressStyle: {
-                background: "#ef4444",
-              },
-              icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-              theme: "light",
-            });
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 
@@ -239,16 +240,44 @@ const OwnerDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-50 font-inter">
       {/* Sidebar */}
-      <aside className="w-64 bg-gray-900 text-white flex-shrink-0 flex flex-col">
+      <aside className="w-64 bg-gray-900 text-white flex-shrink-0 flex flex-col h-screen sticky top-0">
         <div className="p-6 border-b border-gray-800">
-          <h1 className="text-xl font-bold text-blue-400">VoltX Owner</h1>
+          <h1 className="text-xl font-bold text-blue-400 tracking-tight">
+            VoltX Owner
+          </h1>
         </div>
-        <nav className="flex-1 p-4">
-          <button className="flex items-center space-x-3 w-full p-3 bg-blue-600 rounded-xl font-medium transition-all">
+
+        <nav className="flex-1 p-4 space-y-2">
+          {/* My Stores Navigation */}
+          <Link
+            to="/owner-dashboard"
+            className="flex items-center space-x-3 w-full p-3 bg-blue-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-blue-900/20"
+          >
             <HiBuildingStorefront className="text-xl" />
             <span>My Stores</span>
-          </button>
+          </Link>
+
+          {/* Products Management Navigation */}
+          <Link
+            to="/owner-products"
+            className="flex items-center space-x-3 w-full p-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl font-medium transition-all group"
+          >
+            <HiPlusCircle className="text-xl group-hover:text-blue-400 transition-colors" />
+            <span>Products Management</span>
+          </Link>
         </nav>
+
+        {/* Optional Footer for Sidebar */}
+        <div className="p-4 border-t border-gray-800">
+          <div className="flex items-center space-x-3 p-2">
+            <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold text-blue-400">
+              OG
+            </div>
+            <span className="text-xs text-gray-500 font-medium truncate">
+              Owner Account
+            </span>
+          </div>
+        </div>
       </aside>
 
       <main className="flex-1 p-8">
