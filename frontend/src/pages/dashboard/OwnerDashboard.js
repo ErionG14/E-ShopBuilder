@@ -41,7 +41,20 @@ const OwnerDashboard = () => {
       if (err.response?.status === 404) {
         setStores([]);
       } else {
-        toast.error("Error loading stores");
+        toast.error("Error loading stores", {
+                style: {
+                  background: "white",
+                  color: "#1f2937",
+                  fontWeight: "600",
+                  borderRadius: "12px",
+                  border: "1px solid #fee2e2",
+                },
+                progressStyle: {
+                  background: "#ef4444",
+                },
+                icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+                theme: "light",
+              });
       }
     } finally {
       setLoading(false);
@@ -68,7 +81,14 @@ const OwnerDashboard = () => {
         withCredentials: true,
       });
       toast.success("New store launched!", {
-        icon: <HiCheckBadge className="text-green-500 text-2xl" />,
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "bold",
+          borderRadius: "12px",
+        },
+        progressStyle: { background: "#22c55e" },
+        icon: <HiCheckBadge style={{ color: "#22c55e", fontSize: "24px" }} />,
       });
       setIsCreateModalOpen(false);
       fetchMyStores();
@@ -79,7 +99,20 @@ const OwnerDashboard = () => {
         const firstError = Object.values(errorData.errors).flat()[0];
         toast.error(firstError);
       } else {
-        toast.error(errorData?.Message || "Failed to create store");
+        toast.error(errorData?.Message || "Failed to create store", {
+          style: {
+            background: "white",
+            color: "#1f2937",
+            fontWeight: "600",
+            borderRadius: "12px",
+            border: "1px solid #fee2e2",
+          },
+          progressStyle: {
+            background: "#ef4444",
+          },
+          icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+          theme: "light",
+        });
       }
     }
   };
@@ -106,7 +139,20 @@ const OwnerDashboard = () => {
       setIsEditModalOpen(false);
       fetchMyStores();
     } catch (err) {
-      toast.error("Update failed");
+      toast.error("Failed to update store", {
+              style: {
+                background: "white",
+                color: "#1f2937",
+                fontWeight: "600",
+                borderRadius: "12px",
+                border: "1px solid #fee2e2",
+              },
+              progressStyle: {
+                background: "#ef4444",
+              },
+              icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+              theme: "light",
+            });
     }
   };
 
@@ -118,10 +164,32 @@ const OwnerDashboard = () => {
         {},
         { withCredentials: true },
       );
-      toast.success(`Store status updated!`);
+      toast.success("Store status updated!", {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "bold",
+          borderRadius: "12px",
+        },
+        progressStyle: { background: "#22c55e" },
+        icon: <HiCheckBadge style={{ color: "#22c55e", fontSize: "24px" }} />,
+      });
       fetchMyStores();
     } catch (err) {
-      toast.error("Status update failed");
+      toast.error("Status update failed", {
+              style: {
+                background: "white",
+                color: "#1f2937",
+                fontWeight: "600",
+                borderRadius: "12px",
+                border: "1px solid #fee2e2",
+              },
+              progressStyle: {
+                background: "#ef4444",
+              },
+              icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+              theme: "light",
+            });
     }
   };
 
@@ -134,12 +202,34 @@ const OwnerDashboard = () => {
           withCredentials: true,
         },
       );
-      toast.success(`Store deleted`);
+      toast.success("Store deleted successfully!", {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "bold",
+          borderRadius: "12px",
+        },
+        progressStyle: { background: "#22c55e" },
+        icon: <HiCheckBadge style={{ color: "#22c55e", fontSize: "24px" }} />,
+      });
       setIsDeleteModalOpen(false);
       setStoreToDelete(null);
       fetchMyStores();
     } catch (err) {
-      toast.error("Deletion failed");
+      toast.error("Failed to delete store", {
+              style: {
+                background: "white",
+                color: "#1f2937",
+                fontWeight: "600",
+                borderRadius: "12px",
+                border: "1px solid #fee2e2",
+              },
+              progressStyle: {
+                background: "#ef4444",
+              },
+              icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+              theme: "light",
+            });
     }
   };
 
