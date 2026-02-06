@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShopBuilder.Cart.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api")]
 [ApiController]
 [Authorize]
 public class CartController : ControllerBase

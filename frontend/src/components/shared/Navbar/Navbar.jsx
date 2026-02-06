@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import apiClient from "../../../services/apiClient";
+import { HiShoppingBag } from "react-icons/hi2"; // Import the cart icon
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -54,84 +55,99 @@ const Navbar = () => {
             </Link>
           </div>
         ) : (
-          <div className="relative">
-            {" "}
-            {/* Dropdown Container */}
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center space-x-2 focus:outline-none hover:bg-gray-100 p-2 rounded-full transition"
-            >
-              {/* Profile Circle */}
-              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm bg-blue-600 text-white font-bold">
-                {user.image ? (
-                  <img
-                    src={user.image}
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  user.username?.charAt(0).toUpperCase()
-                )}
-              </div>
-              <span className="text-gray-700 font-medium hidden sm:block">
-                {user.username}
-              </span>
-              <svg
-                className={`w-4 h-4 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          <div className="flex items-center space-x-4">
+            {/* NEW: Cart Icon - Only shows for Role "User" */}
+            {user.role === "User" && (
+              <Link
+                to="/cart"
+                className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-all group"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            {/* Dropdown Menu */}
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg py-1 z-50">
-                <div className="px-4 py-2 text-xs text-gray-500 border-b">
-                  Manage Account
-                </div>
-
-                {user.role === "Admin" && (
-                  <Link
-                    to="/admin-dashboard"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Admin Panel
-                  </Link>
-                )}
-                {user.role === "Owner" && (
-                  <Link
-                    to="/owner-dashboard"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    My Store
-                  </Link>
-                )}
-
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  My Profile
-                </Link>
-
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-semibold"
-                >
-                  Logout
-                </button>
-              </div>
+                <HiShoppingBag className="text-2xl group-hover:text-blue-600" />
+                {/* Optional: Small red dot to indicate activity */}
+                <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 border-2 border-white rounded-full"></span>
+              </Link>
             )}
+
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center space-x-2 focus:outline-none hover:bg-gray-100 p-2 rounded-full transition"
+              >
+                {/* Profile Circle */}
+                <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm bg-blue-600 text-white font-bold">
+                  {user.image ? (
+                    <img
+                      src={user.image}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    user.username?.charAt(0).toUpperCase()
+                  )}
+                </div>
+                <span className="text-gray-700 font-medium hidden sm:block">
+                  {user.username}
+                </span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg py-1 z-50">
+                  <div className="px-4 py-2 text-xs text-gray-500 border-b">
+                    Manage Account
+                  </div>
+
+                  {user.role === "Admin" && (
+                    <Link
+                      to="/admin-dashboard"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  {user.role === "Owner" && (
+                    <Link
+                      to="/owner-dashboard"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      My Store
+                    </Link>
+                  )}
+
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    My Profile
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-semibold"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

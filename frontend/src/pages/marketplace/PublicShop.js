@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 import {
   HiBuildingStorefront,
   HiChevronLeft,
@@ -20,6 +21,33 @@ const PublicShop = () => {
 
   // Static categories for now - eventually you can fetch these from your DB
   const categories = ["All", "Electronics", "Accessories", "Home", "Fashion"];
+
+  const handleAddToCart = async (product) => {
+    try {
+      const payload = {
+        productId: product.id,
+        storeId: product.storeId,
+        productName: product.name,
+        price: product.price,
+        quantity: 1, // Default to 1 on first click
+        imageUrl: product.imageUrl,
+      };
+
+      // Note: hitting the gateway on 5174
+      await axios.post("http://localhost:5174/api/Cart/AddToCart", payload, {
+        withCredentials: true,
+      });
+
+      toast.success(`${product.name} added to cart!`);
+    } catch (err) {
+      console.error("Cart error:", err);
+      toast.error(
+        err.response?.status === 401
+          ? "Please login to add items to cart"
+          : "Failed to update cart",
+      );
+    }
+  };
 
   useEffect(() => {
     const loadShop = async () => {
@@ -150,7 +178,10 @@ const PublicShop = () => {
                 <span className="text-2xl font-black text-gray-900">
                   ${product.price.toFixed(2)}
                 </span>
-                <button className="bg-gray-900 text-white px-4 py-2 rounded-xl font-bold hover:bg-blue-600 transition-all active:scale-95">
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="bg-gray-900 text-white px-4 py-2 rounded-xl font-bold hover:bg-blue-600 transition-all active:scale-95"
+                >
                   Add
                 </button>
               </div>

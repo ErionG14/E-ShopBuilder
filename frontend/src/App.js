@@ -18,6 +18,7 @@ import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
 import Marketplace from "./pages/marketplace/Marketplace";
 import PublicShop from "./pages/marketplace/PublicShop";
 import ProductManagement from "./pages/dashboard/ProductManagement";
+import CartPage from "./pages/cart/CartPage";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => {
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/profile" element={<UserProfile />} />
                 <Route path="/edit-profile" element={<EditProfileForm />} />
+                <Route path="/cart" element={<CartPage />} />
               </Routes>
               <ToastContainer position="bottom-right" theme="colored" />
             </main>
