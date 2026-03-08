@@ -48,7 +48,8 @@ public class AuthController : ControllerBase
                 HttpOnly = true,   // Protects against XSS
                 Secure = false,    // Set to TRUE in production for HTTPS
                 SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddMinutes(60) // Access token lifespan
+                Path = "/",
+                Expires = DateTime.UtcNow.AddMinutes(15) // Access token lifespan
             };
 
             // Append the Access Token to a cookie
@@ -64,42 +65,55 @@ public class AuthController : ControllerBase
         return Unauthorized(new { Message = "Invalid login attempt." });
     }
     
+    [AllowAnonymous] // Crucial: Allow the call even if the Access Token is expired
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
+        // 1. Extract from cookie
         var refreshToken = Request.Cookies["refresh_token"];
-        var userName = User.Identity?.Name;
 
-        if (string.IsNullOrEmpty(refreshToken)) return BadRequest("Refresh token missing");
-        
+        if (string.IsNullOrEmpty(refreshToken)) 
+        {
+            return BadRequest(new { Message = "Refresh token cookie missing" });
+        }
+    
+        // 2. Lookup user by the token string only
         var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
 
         if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
         {
-            return BadRequest("Invalid or expired refresh token");
+            // If the refresh token is also bad/expired, we return 400 (or 401) 
+            // which tells the React Interceptor to redirect to login.
+            return BadRequest(new { Message = "Invalid or expired refresh token" });
         }
 
-        // Generate new ones
+        // 3. Generate new tokens
         var newAccessToken = await _tokenService.GenerateTokenAsync(user);
         var newRefreshToken = _tokenService.GenerateRefreshToken();
 
+        // 4. Update Database
         user.RefreshToken = newRefreshToken;
+        // Ensure your GenerateRefreshToken also updates the ExpiryTime if you want to slide the window
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); 
         await _userManager.UpdateAsync(user);
 
-        // Update Cookies
+        // 5. Update Cookies
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = false,
+            Secure = false, // Set to true in production with HTTPS
             SameSite = SameSiteMode.Lax,
-            Expires = DateTime.UtcNow.AddMinutes(60)
+            Path = "/",
+            Expires = DateTime.UtcNow.AddDays(7)
         };
 
+        cookieOptions.Expires = DateTime.UtcNow.AddMinutes(15);
         Response.Cookies.Append("jwt_token", newAccessToken, cookieOptions);
-    
+
         cookieOptions.Expires = DateTime.UtcNow.AddDays(7);
         Response.Cookies.Append("refresh_token", newRefreshToken, cookieOptions);
-
+        
+        
         return Ok(new { Message = "Token refreshed" });
     }
     
