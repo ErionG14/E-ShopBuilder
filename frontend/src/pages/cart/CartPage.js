@@ -30,7 +30,20 @@ const CartPage = () => {
       setCartItems(res.data);
     } catch (err) {
       console.error("Error fetching cart:", err);
-      toast.error("Failed to load cart items");
+      toast.error("Failed to load cart items", {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     } finally {
       setLoading(false);
     }
