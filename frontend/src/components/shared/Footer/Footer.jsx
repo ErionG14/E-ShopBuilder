@@ -106,7 +106,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://github.com/ErionG14"
                 className="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-all shadow-lg"
               >
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 496 512">
