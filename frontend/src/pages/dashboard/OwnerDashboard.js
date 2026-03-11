@@ -6,14 +6,12 @@ import {
   HiBuildingStorefront,
   HiPencil,
   HiTrash,
-  HiCheckCircle,
-  HiXCircle,
   HiPlusCircle,
-  HiCheckBadge,
   HiGlobeAlt,
   HiXMark,
   HiPlus,
 } from "react-icons/hi2";
+import { HiMenuAlt1 } from "react-icons/hi";
 
 const OwnerDashboard = () => {
   const [stores, setStores] = useState([]);
@@ -23,8 +21,8 @@ const OwnerDashboard = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [storeToDelete, setStoreToDelete] = useState(null);
   const [editingStore, setEditingStore] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Define the initial state clearly
   const initialFormState = { name: "", slug: "", description: "" };
   const [formData, setFormData] = useState(initialFormState);
 
@@ -34,7 +32,7 @@ const OwnerDashboard = () => {
 
   const fetchMyStores = async () => {
     try {
-      const res = await axios.get("http://localhost:5070/api/Store/MyStore", {
+      const res = await axios.get("http://localhost:5174/api/Store/MyStore", {
         withCredentials: true,
       });
       setStores(Array.isArray(res.data) ? res.data : [res.data]);
@@ -42,20 +40,7 @@ const OwnerDashboard = () => {
       if (err.response?.status === 404) {
         setStores([]);
       } else {
-        toast.error("Error loading stores", {
-          style: {
-            background: "white",
-            color: "#1f2937",
-            fontWeight: "600",
-            borderRadius: "12px",
-            border: "1px solid #fee2e2",
-          },
-          progressStyle: {
-            background: "#ef4444",
-          },
-          icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-          theme: "light",
-        });
+        toast.error("Error loading stores");
       }
     } finally {
       setLoading(false);
@@ -63,58 +48,25 @@ const OwnerDashboard = () => {
   };
 
   const openCreateModal = () => {
-    setFormData(initialFormState); // Reset to empty strings
+    setFormData(initialFormState);
     setIsCreateModalOpen(true);
   };
 
   const handleCreateStore = async (e) => {
     e.preventDefault();
-
-    // PRE-POST CLEANUP:
-    // This ensures your C# [RegularExpression] is happy by removing spaces and caps
     const payload = {
       ...formData,
       slug: formData.slug.toLowerCase().trim().replace(/\s+/g, "-"),
     };
-
     try {
       await axios.post("http://localhost:5174/api/Store/Create", payload, {
         withCredentials: true,
       });
-      toast.success("New store launched!", {
-        style: {
-          background: "white",
-          color: "#1f2937",
-          fontWeight: "bold",
-          borderRadius: "12px",
-        },
-        progressStyle: { background: "#22c55e" },
-        icon: <HiCheckBadge style={{ color: "#22c55e", fontSize: "24px" }} />,
-      });
+      toast.success("New store launched!");
       setIsCreateModalOpen(false);
       fetchMyStores();
     } catch (err) {
-      // Logic to show exactly WHY it's a Bad Request (400)
-      const errorData = err.response?.data;
-      if (errorData?.errors) {
-        const firstError = Object.values(errorData.errors).flat()[0];
-        toast.error(firstError);
-      } else {
-        toast.error(errorData?.Message || "Failed to create store", {
-          style: {
-            background: "white",
-            color: "#1f2937",
-            fontWeight: "600",
-            borderRadius: "12px",
-            border: "1px solid #fee2e2",
-          },
-          progressStyle: {
-            background: "#ef4444",
-          },
-          icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-          theme: "light",
-        });
-      }
+      toast.error("Failed to create store");
     }
   };
 
@@ -140,20 +92,7 @@ const OwnerDashboard = () => {
       setIsEditModalOpen(false);
       fetchMyStores();
     } catch (err) {
-      toast.error("Failed to update store", {
-        style: {
-          background: "white",
-          color: "#1f2937",
-          fontWeight: "600",
-          borderRadius: "12px",
-          border: "1px solid #fee2e2",
-        },
-        progressStyle: {
-          background: "#ef4444",
-        },
-        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-        theme: "light",
-      });
+      toast.error("Failed to update store");
     }
   };
 
@@ -165,32 +104,10 @@ const OwnerDashboard = () => {
         {},
         { withCredentials: true },
       );
-      toast.success("Store status updated!", {
-        style: {
-          background: "white",
-          color: "#1f2937",
-          fontWeight: "bold",
-          borderRadius: "12px",
-        },
-        progressStyle: { background: "#22c55e" },
-        icon: <HiCheckBadge style={{ color: "#22c55e", fontSize: "24px" }} />,
-      });
+      toast.success("Store status updated!");
       fetchMyStores();
     } catch (err) {
-      toast.error("Status update failed", {
-        style: {
-          background: "white",
-          color: "#1f2937",
-          fontWeight: "600",
-          borderRadius: "12px",
-          border: "1px solid #fee2e2",
-        },
-        progressStyle: {
-          background: "#ef4444",
-        },
-        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-        theme: "light",
-      });
+      toast.error("Status update failed");
     }
   };
 
@@ -199,38 +116,14 @@ const OwnerDashboard = () => {
     try {
       await axios.delete(
         `http://localhost:5174/api/Store/Delete/${storeToDelete.id}`,
-        {
-          withCredentials: true,
-        },
+        { withCredentials: true },
       );
-      toast.success("Store deleted successfully!", {
-        style: {
-          background: "white",
-          color: "#1f2937",
-          fontWeight: "bold",
-          borderRadius: "12px",
-        },
-        progressStyle: { background: "#22c55e" },
-        icon: <HiCheckBadge style={{ color: "#22c55e", fontSize: "24px" }} />,
-      });
+      toast.success("Store deleted successfully!");
       setIsDeleteModalOpen(false);
       setStoreToDelete(null);
       fetchMyStores();
     } catch (err) {
-      toast.error("Failed to delete store", {
-        style: {
-          background: "white",
-          color: "#1f2937",
-          fontWeight: "600",
-          borderRadius: "12px",
-          border: "1px solid #fee2e2",
-        },
-        progressStyle: {
-          background: "#ef4444",
-        },
-        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
-        theme: "light",
-      });
+      toast.error("Failed to delete store");
     }
   };
 
@@ -238,50 +131,76 @@ const OwnerDashboard = () => {
     return <div className="p-8 text-center text-gray-500">Loading...</div>;
 
   return (
-    <div className="flex min-h-screen bg-gray-50 font-inter">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-900 text-white flex-shrink-0 flex flex-col h-screen sticky top-0">
-        <div className="p-6 border-b border-gray-800">
+    <div className="flex min-h-screen bg-gray-50 font-inter overflow-x-hidden">
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* 2. SIDEBAR */}
+      <aside
+        className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 text-white transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      `}
+      >
+        <div className="p-6 border-b border-gray-800 flex justify-between items-center">
           <h1 className="text-xl font-bold text-blue-400 tracking-tight">
             VoltX Owner
           </h1>
+          <button
+            className="lg:hidden text-white"
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <HiXMark size={24} />
+          </button>
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
-          {/* My Stores Navigation */}
           <Link
             to="/owner-dashboard"
-            className="flex items-center space-x-3 w-full p-3 bg-blue-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-blue-900/20"
+            className="flex items-center space-x-3 w-full p-3 bg-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-blue-900/20"
           >
             <HiBuildingStorefront className="text-xl" />
             <span>My Stores</span>
           </Link>
-
-          {/* Products Management Navigation */}
           <Link
             to="/owner-products"
-            className="flex items-center space-x-3 w-full p-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl font-medium transition-all group"
+            className="flex items-center space-x-3 w-full p-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl font-medium group transition-all"
           >
-            <HiPlusCircle className="text-xl group-hover:text-blue-400 transition-colors" />
+            <HiPlusCircle className="text-xl group-hover:text-blue-400" />
             <span>Products Management</span>
           </Link>
         </nav>
 
-        {/* Optional Footer for Sidebar */}
         <div className="p-4 border-t border-gray-800">
           <div className="flex items-center space-x-3 p-2">
             <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold text-blue-400">
               OG
             </div>
-            <span className="text-xs text-gray-500 font-medium truncate">
+            <span className="text-xs text-gray-500 font-medium">
               Owner Account
             </span>
           </div>
         </div>
       </aside>
 
-      <main className="flex-1 p-8">
-        <header className="flex justify-between items-center mb-8">
+      {/* 3. MAIN CONTENT */}
+      <main className="flex-1 p-4 md:p-8 w-full min-w-0">
+        <div className="lg:hidden mb-6 flex items-center justify-between">
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-2 bg-white rounded-lg shadow-sm border border-gray-200"
+          >
+            <HiMenuAlt1 size={26} className="text-gray-700" />
+          </button>
+          <h2 className="font-bold text-gray-800 text-lg">Owner Panel</h2>
+          <div className="w-10"></div>
+        </div>
+
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
               Store Management
@@ -293,7 +212,7 @@ const OwnerDashboard = () => {
           {stores.length > 0 && (
             <button
               onClick={openCreateModal}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition-all shadow-lg active:scale-95"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg transition-all active:scale-95"
             >
               <HiPlus className="text-xl" />
               <span>New Store</span>
@@ -333,25 +252,27 @@ const OwnerDashboard = () => {
                 <div className="p-6 flex-1">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                      <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
                         <HiBuildingStorefront className="text-2xl" />
                       </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900">
+                      <div className="min-w-0">
+                        <h3 className="text-lg font-bold text-gray-900 truncate">
                           {s.name}
                         </h3>
                         <div className="flex items-center text-gray-400 text-xs mt-0.5">
-                          <HiGlobeAlt className="mr-1" />
-                          <span>voltx.com/shops/{s.slug}</span>
+                          <HiGlobeAlt className="mr-1 flex-shrink-0" />
+                          <span className="truncate">
+                            voltx.com/shops/{s.slug}
+                          </span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex space-x-1">
+                    <div className="flex space-x-1 flex-shrink-0">
                       <button
                         onClick={() => openEditModal(s)}
                         className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                       >
-                        <HiPencil />
+                        <HiPencil size={20} />
                       </button>
                       <button
                         onClick={() => {
@@ -360,7 +281,7 @@ const OwnerDashboard = () => {
                         }}
                         className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                       >
-                        <HiTrash />
+                        <HiTrash size={20} />
                       </button>
                     </div>
                   </div>
@@ -376,8 +297,8 @@ const OwnerDashboard = () => {
 
       {/* CREATE MODAL */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
             <div className="bg-blue-600 p-6 text-white flex justify-between items-center">
               <h3 className="text-xl font-bold">New Store</h3>
               <button onClick={() => setIsCreateModalOpen(false)}>
@@ -390,18 +311,17 @@ const OwnerDashboard = () => {
                 placeholder="Store Name"
                 required
                 value={formData.name}
-                className="w-full p-3 bg-gray-50 border rounded-xl outline-none"
+                className="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
               />
-
               <input
                 type="text"
                 placeholder="URL Slug"
                 required
                 value={formData.slug}
-                className="w-full p-3 bg-gray-50 border rounded-xl outline-none"
+                className="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={(e) =>
                   setFormData({
                     ...formData,
@@ -409,16 +329,14 @@ const OwnerDashboard = () => {
                   })
                 }
               />
-
               <textarea
                 placeholder="Description"
                 value={formData.description}
-                className="w-full p-3 bg-gray-50 border rounded-xl outline-none"
+                className="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
                 }
               />
-
               <button
                 type="submit"
                 className="w-full py-4 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-700 transition-all"
@@ -432,8 +350,8 @@ const OwnerDashboard = () => {
 
       {/* EDIT MODAL */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
             <div className="bg-gray-900 p-6 text-white flex justify-between items-center">
               <h3 className="text-xl font-bold">Edit Details</h3>
               <button onClick={() => setIsEditModalOpen(false)}>
@@ -444,20 +362,18 @@ const OwnerDashboard = () => {
               <input
                 type="text"
                 value={formData.name}
-                className="w-full p-3 bg-gray-50 border rounded-xl outline-none"
+                className="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
               />
-
               <textarea
                 value={formData.description}
-                className="w-full p-3 bg-gray-50 border rounded-xl outline-none"
+                className="w-full p-3 bg-gray-50 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
                 }
               />
-
               <button
                 type="submit"
                 className="w-full py-4 bg-blue-600 text-white font-bold rounded-xl shadow-lg"
@@ -469,34 +385,32 @@ const OwnerDashboard = () => {
         </div>
       )}
 
-      {/* DELETE CONFIRMATION MODAL */}
+      {/* DELETE CONFIRMATION */}
       {isDeleteModalOpen && storeToDelete && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden animate-in zoom-in duration-300">
-            <div className="p-8 text-center">
-              <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <HiTrash className="text-4xl" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Delete Store?
-              </h3>
-              <p className="text-gray-500 text-sm mb-6">
-                Are you sure? This action is permanent.
-              </p>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setIsDeleteModalOpen(false)}
-                  className="flex-1 py-3 font-bold text-gray-500 hover:bg-gray-100 rounded-xl transition-all"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={confirmDeleteStore}
-                  className="flex-1 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 shadow-lg active:scale-95 transition-all"
-                >
-                  Delete
-                </button>
-              </div>
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden p-8 text-center animate-in zoom-in duration-200">
+            <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <HiTrash className="text-4xl" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
+              Delete Store?
+            </h3>
+            <p className="text-gray-500 text-sm mb-6">
+              Are you sure? This action is permanent.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="flex-1 py-3 font-bold text-gray-500 hover:bg-gray-100 rounded-xl transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteStore}
+                className="flex-1 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 shadow-lg"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>

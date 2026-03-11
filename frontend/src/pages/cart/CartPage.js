@@ -167,7 +167,7 @@ const CartPage = () => {
 
         {cartItems.length === 0 ? (
           <div className="bg-white rounded-[2.5rem] p-20 text-center border border-gray-100 shadow-sm">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4 text-gray-300">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Cart is Empty
             </h2>
             <Link

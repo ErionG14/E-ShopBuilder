@@ -2,6 +2,7 @@
 using EShopBuilder.Cart.API.Data;
 using EShopBuilder.Cart.API.DTO;
 using EShopBuilder.Cart.API.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ public class CartController : ControllerBase
         _context = context;
     }
     
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     [HttpPost("AddToCart")]
     public async Task<IActionResult> AddToCart([FromBody] CartItemDto dto)
     {
@@ -55,7 +57,7 @@ public class CartController : ControllerBase
     }
     
     [HttpGet("MyCart")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     public async Task<IActionResult> GetMyCart()
     {
         // Extract the UserId from the JWT token
@@ -77,7 +79,7 @@ public class CartController : ControllerBase
     
     // PUT: api/Cart/UpdateCart/5
     [HttpPut("UpdateCart/{id}")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     public async Task<IActionResult> UpdateCart(int id, [FromBody] int newQuantity)
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -107,7 +109,7 @@ public class CartController : ControllerBase
 
 // DELETE: api/Cart/DeleteCart/5
     [HttpDelete("DeleteCart/{id}")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     public async Task<IActionResult> DeleteCart(int id)
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -128,7 +130,7 @@ public class CartController : ControllerBase
     
     // DELETE: api/Cart/ClearCart
     [HttpDelete("ClearCart")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     public async Task<IActionResult> ClearCart()
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;

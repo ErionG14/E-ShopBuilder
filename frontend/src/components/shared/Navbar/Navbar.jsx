@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import apiClient from "../../../services/apiClient";
-import { HiShoppingBag} from "react-icons/hi";
+import { HiShoppingBag } from "react-icons/hi";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -30,8 +30,7 @@ const Navbar = () => {
 
   return (
     <nav className="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-50 h-20">
-      
-      {/*Hamburger Menu*/}
+      { /* Hamburger & Logo */ }
       <div className="flex items-center">
         <button
           className="md:hidden flex flex-col justify-center items-center w-10 h-10 mr-4 focus:outline-none z-50"
@@ -87,18 +86,18 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center">
         {!user ? (
-          <div className="flex items-center bg-gray-100 p-1 rounded-full border border-gray-200 shadow-sm">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Link
               to="/login"
-              className="px-5 py-2 text-sm font-semibold text-gray-700 hover:text-black transition-colors rounded-full"
+              className="text-sm font-bold text-gray-700 hover:text-blue-600 transition-colors px-2 py-2"
             >
               Log in
             </Link>
             <Link
               to="/signup"
-              className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-blue-700 transition-all shadow-md active:scale-95"
+              className="bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-sm font-bold hover:bg-blue-700 transition-all shadow-md active:scale-95"
             >
               Sign up
             </Link>
@@ -137,7 +136,9 @@ const Navbar = () => {
                 </span>
 
                 <svg
-                  className={`w-4 h-4 transition-transform hidden sm:block ${isDropdownOpen ? "rotate-180" : ""}`}
+                  className={`w-4 h-4 transition-transform hidden sm:block ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
