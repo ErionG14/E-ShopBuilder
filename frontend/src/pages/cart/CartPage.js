@@ -183,23 +183,40 @@ const CartPage = () => {
               {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-3xl p-6 flex items-center gap-6 border border-gray-100 shadow-sm"
+                  className="bg-white rounded-3xl p-4 md:p-6 flex flex-col sm:flex-row items-center gap-4 md:gap-6 border border-gray-100 shadow-sm relative overflow-hidden"
                 >
-                  <div className="w-24 h-24 bg-gray-100 rounded-2xl overflow-hidden flex-shrink-0">
+                  {/* FIXED: Smaller Product Image for Mobile */}
+                  <div className="w-24 h-24 md:w-32 md:h-32 bg-gray-50 rounded-2xl overflow-hidden flex-shrink-0 border border-gray-100">
                     <img
                       src={item.imageUrl}
                       alt={item.productName}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-gray-900 text-lg">
-                      {item.productName}
-                    </h3>
-                    <div className="flex items-center justify-between">
+
+                  {/* Product Details & Controls Wrapper */}
+                  <div className="flex-1 flex flex-col w-full">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-gray-900 text-lg pr-8">
+                        {item.productName}
+                      </h3>
+
+                      {/* FIXED: Delete Button with better mobile positioning */}
+                      <button
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="absolute top-4 right-4 sm:static p-2 text-gray-300 hover:text-red-500 transition-colors bg-gray-50 sm:bg-transparent rounded-full"
+                        aria-label="Remove item"
+                      >
+                        <HiTrash className="text-xl md:text-2xl" />
+                      </button>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-auto">
                       <span className="text-xl font-black text-gray-900">
                         ${item.price.toFixed(2)}
                       </span>
+
+                      {/* Quantity Controls */}
                       <div className="flex items-center bg-gray-50 rounded-xl p-1 border border-gray-100">
                         <button
                           onClick={() =>
@@ -223,12 +240,6 @@ const CartPage = () => {
                       </div>
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleRemoveItem(item.id)}
-                    className="text-gray-300 hover:text-red-500 transition-colors"
-                  >
-                    <HiTrash className="text-xl" />
-                  </button>
                 </div>
               ))}
             </div>
