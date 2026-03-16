@@ -3,7 +3,6 @@ import {
   HiRocketLaunch,
   HiShieldCheck,
   HiCircleStack,
-  HiCpuChip,
   HiGlobeEuropeAfrica,
 } from "react-icons/hi2";
 

@@ -7,8 +7,9 @@ import {
   HiArrowRight,
   HiMinus,
   HiPlus,
-  HiMapPin, // Added for the address icon
+  HiMapPin,
 } from "react-icons/hi2";
+import { HiBadgeCheck } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 const CartPage = () => {
@@ -97,7 +98,23 @@ const CartPage = () => {
       }
     } catch (err) {
       console.error("Checkout process failed:", err);
-      toast.error("Failed to process order. Please try again.");
+      const errorMessage =
+        err.response?.data?.Message || "Failed to process order. Please try again later.";
+
+      toast.error(errorMessage, {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 
@@ -124,8 +141,24 @@ const CartPage = () => {
         ),
       );
     } catch (err) {
-      console.error("Update error:", err);
-      toast.error("Could not update quantity");
+      console.error("Update failed:", err);
+      const errorMessage =
+        err.response?.data?.Message || "Could not update quantity.";
+
+      toast.error(errorMessage, {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 
@@ -135,9 +168,37 @@ const CartPage = () => {
         withCredentials: true,
       });
       setCartItems((prev) => prev.filter((item) => item.id !== id));
-      toast.success("Item removed");
+      toast.success("Item removed", {
+              style: {
+                background: "white",
+                color: "#1f2937",
+                fontWeight: "bold",
+                borderRadius: "12px",
+              },
+              progressStyle: {
+                background: "#22c55e",
+              },
+              icon: <HiBadgeCheck style={{ color: "#22c55e", fontSize: "24px" }} />,
+            });
     } catch (err) {
-      toast.error("Failed to remove item");
+      console.error("Update failed:", err.response?.data);
+            const errorMessage =
+                    err.response?.data?.Message || "Failed to delete item.";
+            
+                  toast.error(errorMessage, {
+                    style: {
+                      background: "white",
+                      color: "#1f2937",
+                      fontWeight: "600",
+                      borderRadius: "12px",
+                      border: "1px solid #fee2e2",
+                    },
+                    progressStyle: {
+                      background: "#ef4444",
+                    },
+                    icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+                    theme: "light",
+                  });
     }
   };
 

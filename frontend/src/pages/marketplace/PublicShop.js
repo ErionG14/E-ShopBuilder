@@ -8,7 +8,7 @@ import {
   HiMagnifyingGlass,
   HiTag,
 } from "react-icons/hi2";
-
+import { HiBadgeCheck } from "react-icons/hi";
 const PublicShop = () => {
   const { slug } = useParams();
   const [store, setStore] = useState(null);
@@ -38,14 +38,39 @@ const PublicShop = () => {
         withCredentials: true,
       });
 
-      toast.success(`${product.name} added to cart!`);
+      toast.success(`${product.name} added to cart!`, {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "bold",
+          borderRadius: "12px",
+        },
+        progressStyle: {
+          background: "#22c55e",
+        },
+        icon: <HiBadgeCheck style={{ color: "#22c55e", fontSize: "24px" }} />,
+      });
     } catch (err) {
       console.error("Cart error:", err);
-      toast.error(
+      const errorMessage =
         err.response?.status === 401
           ? "Please login to add items to cart"
-          : "Failed to update cart",
-      );
+          : "Failed to update cart";
+
+      toast.error(errorMessage, {
+        style: {
+          background: "white",
+          color: "#1f2937",
+          fontWeight: "600",
+          borderRadius: "12px",
+          border: "1px solid #fee2e2",
+        },
+        progressStyle: {
+          background: "#ef4444",
+        },
+        icon: <span style={{ color: "#ef4444", fontSize: "18px" }}>✕</span>,
+        theme: "light",
+      });
     }
   };
 

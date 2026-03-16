@@ -15,7 +15,6 @@ const Login = () => {
     setError("");
 
     try {
-      // Remember: apiClient has withCredentials: true set!
       await apiClient.post("/identity/Auth/login", { email, password });
 
       // Verify the cookie and update context
